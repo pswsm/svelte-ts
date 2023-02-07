@@ -1,14 +1,15 @@
 const geocodingApiBase: string = "https://geocoding-api.open-meteo.com/v1/search";
 const openMeteoApiBase: string = "https://api.open-meteo.com/v1/forecast";
 let location: string = "L'Hospitalet de Llobregat";
-let previousLocation = '';
+let previousLocation: string = '';
 
 export function load(): object {
 	let openMeteoData = getFromOpenMeteo(location);
-	let latitude: number = openMeteoData.then((data) => data.results[0].latitude);
-	let longitude: number = openMeteoData.then((data) => data.results[0].longitude);
+	let latitude: Promise<number> = openMeteoData.then((data) => data.results[0].latitude).catch((_e) => 41.35967);
+	let longitude: Promise<number> = openMeteoData.then((data) => data.results[0].longitude).catch((_e) => 2.10028 );
 	let openMeteoWeather = getWeatherFromOpenMeteo(latitude, longitude);
-	return { location: openMeteoData.then( (data) => data.results[0].name ).catch( (_e) => previousLocation ), weatherData: openMeteoWeather, latitude, longitude }
+	let openMeteoFetchUrl: string = openMeteoApiBase + '?latitude=' + latitude + '&logitude=' + longitude;
+	return { location: openMeteoData.then( (data) => data.results[0].name ).catch( (_e) => previousLocation ), weatherData: openMeteoWeather, latitude, longitude, openMeteoFetchUrl }
 };
 
 function changeLocation(newLoc: string): void {
@@ -29,6 +30,6 @@ async function getFromOpenMeteo(ubicacio: string): Promise<any> {
 }
 
 async function getWeatherFromOpenMeteo(latitude: any, longitude: any) {
-	let openMeteoResponse: Response = await fetch(`${openMeteoApiBase}?latitude=12&longitude=12`);
+	let openMeteoResponse: Response = await fetch(openMeteoApiBase + '?latitude=' + latitude.toString() + '&logitude=' + longitude.toString());
 	return openMeteoResponse.json()
 }
