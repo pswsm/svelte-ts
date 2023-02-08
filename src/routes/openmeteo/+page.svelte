@@ -1,5 +1,6 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
+    import Graph from "../../components/graph.svelte";
 
 	let display: string = 'none';
 	let loading: boolean = false;
@@ -17,8 +18,10 @@
 		<button type="submit" disabled={loading}>Canviar</button>
 	</form>
 </div>
+<h2>Ubicació actual: { data.ubicacio }</h2>
 <button type="button" on:click={toggleDisplay}>Canviar ubicació</button>
-<pre>{ JSON.stringify(data) }</pre>
+<!-- <pre>{ JSON.stringify(data) }</pre> -->
+<Graph graphData={data.temps} />
 <footer>
 <p>Dades provinents de:</p>
 <ul>
