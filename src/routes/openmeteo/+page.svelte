@@ -20,8 +20,8 @@
 </div>
 <h2>Ubicació actual: { data.ubicacio }</h2>
 <button type="button" on:click={toggleDisplay}>Canviar ubicació</button>
-<!-- <pre>{ JSON.stringify(data) }</pre> -->
-<Graph graphData={data.temps} />
+<pre>{ JSON.stringify(data) }</pre>
+<Graph />
 <footer>
 <p>Dades provinents de:</p>
 <ul>
