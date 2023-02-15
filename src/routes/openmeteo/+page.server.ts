@@ -15,14 +15,11 @@ export function load(): object {
 	})
 	.then( (res) => {
 		let forecastData: object = res.hourly;
-		let fmtForecastData: { labels: string[], datasets: Array<object> } = { labels: forecastData.time, datasets: [] };
-		let noTimeForecastData: object = Object.fromEntries(Object.entries(forecastData).filter( ([k]) => k !== 'time' ));
-		for (const label in noTimeForecastData) {
-			if (noTimeForecastData.hasOwnProperty(label)) {
-				const data = noTimeForecastData[label];
-				fmtForecastData.datasets.push({label, data})
-			}
-		}
+		let fmtForecastData: { title: string, data: [Date, number] | [] } = { title: 'Temps', data: [] };
+		let regex: RegExp = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/
+		forecastData.time.forEach( (elem, idx) => { 
+			fmtForecastData.data.push([Date.parse(elem), forecastData.temperature_2m[idx]])
+		});
 		return fmtForecastData;
 	} )
 

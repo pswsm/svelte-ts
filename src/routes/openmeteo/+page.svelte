@@ -5,7 +5,7 @@
 	let display: string = 'none';
 	let loading: boolean = false;
 
-	export let data: any;
+	export let data: { ubicacio: string, temps: any };
 
 	function toggleDisplay(): void {
 		display = (display === 'none') ? 'block' : 'none';
@@ -21,7 +21,7 @@
 <h2>Ubicació actual: { data.ubicacio }</h2>
 <button type="button" on:click={toggleDisplay}>Canviar ubicació</button>
 <pre>{ JSON.stringify(data) }</pre>
-<Graph />
+<Graph ubicacio={data.ubicacio} series={data.temps} />
 <footer>
 <p>Dades provinents de:</p>
 <ul>
